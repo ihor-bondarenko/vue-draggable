@@ -32,10 +32,16 @@
         this.el.draggable = true;
 
         this.el.addEventListener('drag', function(e){
+            e.preventDefault();
            // console.log(event);
+        });
+        this.el.addEventListener('dragstart', function(e){
+            //e.preventDefault();
+            e.dataTransfer.setData("text/plain", e.target.id);
         });
         this.el.addEventListener('drop', function(e){
             e.preventDefault();
+            e.target.style.backgroundColor = 'inherit';
             console.log('%s   %s', 'drop', e)
         });
         this.el.addEventListener('dragover', function(e){
