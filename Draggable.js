@@ -37,6 +37,7 @@
         });
         this.el.addEventListener('dragstart', function(e){
             //e.preventDefault();
+            console.log(e);
             e.dataTransfer.setData("text/plain", e.target.id);
         });
         this.el.addEventListener('drop', function(e){
