@@ -45,7 +45,7 @@
         });
         this.el.addEventListener('dragleave', function(e){
             e.preventDefault();
-            e.target.style.backgroundColor = '';
+            e.target.style.backgroundColor = 'inherit';
             console.log('%s   %s', 'dragleave', e)
         });
 
