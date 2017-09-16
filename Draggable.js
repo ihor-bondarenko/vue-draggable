@@ -34,7 +34,7 @@
       var newDiv = document.createElement("div");
       newDiv.setAttribute('class', 'event-type-container');
       var elType = document.createElement('span');
-      elType.insertAdjacentHTML('afterbegin', e.type);
+      elType.insertAdjacentHTML('afterbegin',e.type);
       newDiv.appendChild(elType)
       logContainerEl.appendChild(newDiv);
     }
@@ -45,19 +45,17 @@
         }
         this.el = el;
         this.el.draggable = true;
-
+        this.el.addEventListener('touchstart', function(e){
+          e.preventDefault();
+          e.stopPropagation();
+         logEvent(e);
+        });
         this.el.addEventListener('mousedown', function(e){
           console.log(e);
           logEvent(e);
         });
-
-        this.el.addEventListener('touchstart', function(e){
-          e.preventDefault();
-          e.stopPropagation();
-        //  logEvent(e);
-        });
         this.el.addEventListener('pointerdown', function(e){
-        //  e.preventDefault();
+          //e.preventDefault();
           e.stopPropagation();
           logEvent(e);
           var elem = document.elementFromPoint(e.clientX, e.clientY);
@@ -76,6 +74,7 @@
           //  console.log(e);
         });
         this.el.addEventListener('dragstart', function(e){
+          logEvent(e)
             //e.preventDefault();
             e.dataTransfer.setData("text/plain", e.target.id);
         });
