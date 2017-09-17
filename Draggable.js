@@ -22,7 +22,16 @@
         };
     }
 
-    console.log(Modernizr.hasEvent('touchmove'));
+    var _isTouchstart = checkHasEvent('touchstart');
+    var _isMousedown = checkHasEvent('mousedown');
+    var _isPointerdown = checkHasEvent('pointerdown');
+
+    function checkHasEvent(evName){
+      if(typeof Modernizr != "undefined") {
+          return Modernizr.hasEvent(evName);
+      }
+      return false;
+    }
 
     function logEvent(e) {
       var logContainerEl = document.getElementById('eventLog');
@@ -35,8 +44,28 @@
       newDiv.setAttribute('class', 'event-type-container');
       var elType = document.createElement('span');
       elType.insertAdjacentHTML('afterbegin',e.type);
-      newDiv.appendChild(elType)
-      logContainerEl.appendChild(newDiv);
+        elType.insertAdjacentHTML('afterbegin', '<div></div>');
+      elType.insertAdjacentHTML('afterbegin', '_isTouchstart:'+_isTouchstart+' _isMousedown:'+_isMousedown+' _isPointerdown:'+_isPointerdown)
+      newDiv.appendChild(elType);
+      logContainerEl.insertBefore(newDiv, logContainerEl.firstChild);
+    }
+
+    function _onPointerdown(e){
+      console.log(e);
+        e.preventDefault();
+        e.stopPropagation();
+        logEvent(e);
+        var elem = document.elementFromPoint(e.clientX, e.clientY);
+    }
+
+    function _onTouchcancel(e) {
+      logEvent(e);
+    }
+
+    function _onTouchstart(e) {
+     e.preventDefault();
+     e.stopPropagation();
+     logEvent(e);
     }
 
     function Draggable(el, options) {
@@ -45,22 +74,13 @@
         }
         this.el = el;
         this.el.draggable = true;
-        this.el.addEventListener('touchstart', function(e){
-          e.preventDefault();
-          e.stopPropagation();
-         logEvent(e);
-        });
+        this.el.addEventListener('touchstart', _onTouchstart, false);
+        this.el.addEventListener('touchcancel', _onTouchcancel, false);
         this.el.addEventListener('mousedown', function(e){
           console.log(e);
           logEvent(e);
         });
-        this.el.addEventListener('pointerdown', function(e){
-          //e.preventDefault();
-          e.stopPropagation();
-          logEvent(e);
-          var elem = document.elementFromPoint(e.clientX, e.clientY);
-          //console.log(elem);
-        });
+        this.el.addEventListener('pointerdown', _onPointerdown, false);
         this.el.addEventListener('touchend', function(e){
         //  e.preventDefault();
         //  e.stopPropagation();
