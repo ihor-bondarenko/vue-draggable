@@ -70,7 +70,7 @@
 
     function Draggable(el, options) {
         if (!(el && el.nodeType && el.nodeType === 1)) {
-            throw 'Sortable: `el` must be HTMLElement, and not ' + {}.toString.call(el);
+            throw 'Draggable: `el` must be HTMLElement, and not ' + {}.toString.call(el);
         }
         this.el = el;
         this.el.draggable = true;
